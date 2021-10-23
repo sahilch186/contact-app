@@ -1,38 +1,46 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-class AddContact extends React.Component {
+class EditContact extends React.Component {
     constructor(props) {
         super(props);
-        props.URL(props.location.pathname.split('/')[1]);
+        const {id, name, number} =props.location.state.contact;
 
+        this.state = {
+            id:id,
+            name:name,
+            number:number,
+        }
+        this.props.URL(props.location.pathname.split('/')[1]);
     }
-    
+
     state = {
         name: "",
         number: "",
     }
-    
-    add = (e) => {
+
+    update = (e) => {
         e.preventDefault();
 
         if(this.state.name === "" || this.state.number === ""){
             alert("All Fields are Mandatory")
         }
         else{
-            this.props.addContactHandler(this.state);
+            this.props.updateContactHandler(this.state);
             this.setState({name: "", number: ""})
             this.props.history.push("/");
         }
     }
+
+    
     
     
     render() {
         return (
             <div className="mt-5 pt-3">
                 <div className="card p-3 mt-3">
-                <h2>Add a new contact</h2>
-                <form onSubmit={this.add}>
+                <h2>Edit Contact</h2>
+                <form onSubmit={this.update}>
                     <div className="form-group mb-3">
                         <label>Name</label>
                         <input type="text" name="name" className="form-control" value={this.state.name} onChange={(e)=> this.setState({name: e.target.value})} placeholder="Enter Contact Name" />
@@ -43,7 +51,7 @@ class AddContact extends React.Component {
                     </div>
                     <div className="d-flex justify-content-between">
                     <Link to="/" className="btn btn-secondary">Go Back</Link>
-                    <button type="submit" className="btn btn-primary">Add Contact</button>
+                    <button type="submit" className="btn btn-primary">Edit Contact</button>
                     </div>
                 </form>
                 </div>
@@ -52,4 +60,4 @@ class AddContact extends React.Component {
     }
 }
 
-export default AddContact;
+export default EditContact;
